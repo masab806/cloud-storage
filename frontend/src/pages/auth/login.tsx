@@ -7,6 +7,7 @@ import type z from "zod";
 import { LoginSchema } from "../../lib/schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
+import AuthService from "../../services/auth.service";
 
 
 type LoginForm = z.infer<typeof LoginSchema>
@@ -14,6 +15,10 @@ type LoginForm = z.infer<typeof LoginSchema>
 export default function Login() {
 
     const [ShowPassword, setShowPassword] = useState<Boolean| null>(null)
+
+    const {useHandleLoginRequest} = AuthService()
+
+    const {mutate: handleLogin} = useHandleLoginRequest()
 
     const {
         register,
@@ -23,8 +28,10 @@ export default function Login() {
         resolver: zodResolver(LoginSchema)
     })
 
+
     const onFormSubmit = (data: LoginForm)=>{
-        console.log("Submitted Data: ", data)
+        console.log("Submitted data: ", data)
+        handleLogin(data)
     }
 
     return (

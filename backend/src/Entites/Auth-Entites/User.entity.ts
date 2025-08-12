@@ -6,12 +6,12 @@ export class User{
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({type: 'varchar'})
+    @Column({type: 'varchar', nullable: true})
     fullName: string
 
-    @Column({type: 'varchar'})
+    @Column({type: 'varchar', nullable: true})
     email: string
 
-    @Column({type: 'text'})
+    @Column({type: 'text', nullable: true})
     password: string
 }

@@ -9,10 +9,15 @@ import { useState } from "react";
 import { zodResolver } from '@hookform/resolvers/zod';
 import type z from "zod";
 import { SignUpSchema } from "../../lib/schemas/schema";
+import AuthService from "../../services/auth.service";
 
 type SignUpForm = z.infer<typeof SignUpSchema>
 
 export default function SignUp() {
+
+    const {useHandleSignUpRequest} = AuthService()
+
+    const {mutate: handleSignUp} = useHandleSignUpRequest()
 
     const {
         register,
@@ -28,6 +33,7 @@ export default function SignUp() {
 
     const onFormSubmit = (data: SignUpForm)=> {
         console.log("Submitted Data: ", data)
+        handleSignUp(data)
     }
 
     return (
