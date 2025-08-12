@@ -11,3 +11,8 @@ export const SignUpSchema = z.object({
         message: "Passwords Donot Match!"
     }
 )
+
+export const LoginSchema = z.object({
+    email: z.string().email().min(1, "Invalid Email Address"),
+    password: z.string().min(1, "Invalid Password")
+})
