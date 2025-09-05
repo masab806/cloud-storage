@@ -125,5 +125,9 @@
 }
 
 @theme{
-  --font-poppins: poppins, 'sans-serif'
+  --font-poppins: poppins, 'sans-serif';
+}
+
+::-webkit-scrollbar{
+  display: none
 }

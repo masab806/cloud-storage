@@ -32,7 +32,6 @@ export default function SignUp() {
     const [ConfirmPassword, setConfirmPassword] = useState<Boolean | null>(null)
 
     const onFormSubmit = (data: SignUpForm)=> {
-        console.log("Submitted Data: ", data)
         handleSignUp(data)
     }
 
