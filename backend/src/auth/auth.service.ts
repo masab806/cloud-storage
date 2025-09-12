@@ -14,15 +14,15 @@ export class AuthService {
         @InjectRepository(User) private usersRepo: Repository<User>,
         private config: ConfigService,
         private jwt: JwtService
-    ){}
+    ) { }
 
-    async signup(dto: SignUpDto){
+    async signup(dto: SignUpDto) {
         try {
-            const {fullName, email, password, confirmPassword} = dto
+            const { fullName, email, password, confirmPassword } = dto
 
-            const existingUser = await this.usersRepo.findOneBy({email})
+            const existingUser = await this.usersRepo.findOneBy({ email })
 
-            if(existingUser){
+            if (existingUser) {
                 throw new ConflictException("User Already Exists!")
             }
 
@@ -33,13 +33,16 @@ export class AuthService {
                 email,
                 password: hashedPassword
             })
-            
-            await this.usersRepo.save(newUser)
+
+            const savedUser = await this.usersRepo.save(newUser)
 
             return {
-                message: 'User Created!',
-                newUser
-            }
+                user: {
+                    id: savedUser.id,
+                    name: savedUser.fullName,
+                    email: savedUser.email,
+                },
+            };
 
 
         } catch (error) {
@@ -48,28 +51,32 @@ export class AuthService {
         }
     }
 
-    async login(dto: LoginDto){
+    async login(dto: LoginDto) {
         try {
-            const {email, password} = dto
+            const { email, password } = dto
 
-            const user = await this.usersRepo.findOneBy({email})
+            const user = await this.usersRepo.findOneBy({ email })
 
-            if(!user){
+            if (!user) {
                 throw new ForbiddenException("Invalid User!")
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
 
-            if(!isMatch){
+            if (!isMatch) {
                 throw new ForbiddenException("Invalid Credentials!")
             }
 
             const tokens = await this.signToken(user.id, user.email)
 
             return {
-                message: "User Logged In!",
-                tokens
-            }
+                user: {
+                    id: user.id,
+                    name: user.fullName,
+                    email: user.email,
+                },
+                token: tokens.access_token,
+            };
 
         } catch (error) {
             console.log("Error: ", error)
@@ -80,7 +87,7 @@ export class AuthService {
     async signToken(
         userId: number,
         email: string
-    ): Promise<{access_token: String}>{
+    ): Promise<{ access_token: String }> {
         const payload = {
             sub: userId,
             email

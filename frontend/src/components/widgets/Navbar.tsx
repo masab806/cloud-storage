@@ -1,8 +1,14 @@
 import React from "react";
 import { DoorOpen, SearchIcon, UploadIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import AuthService from "../../services/auth.service";
 
 export default function Navbar() {
+
+    const {useHandleLogout} = AuthService()
+
+    const handleLogout = useHandleLogout()
+
     return (
         <div className="p-5 sticky top-0 z-50  bg-white">
             <div className="flex gap-24  items-center">
@@ -28,7 +34,7 @@ export default function Navbar() {
                     <UploadIcon/>
                     <p>Upload</p>
                 </Button>
-                <DoorOpen className="text-[#FA7275] cursor-pointer"/> 
+                <DoorOpen onClick={handleLogout} className="text-[#FA7275] cursor-pointer"/> 
             </div>
             </div>
         </div>

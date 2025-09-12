@@ -1,29 +1,56 @@
-import { File, ImagesIcon, LayoutDashboard, PieChart, Square, UserCircle, UserIcon, VideoIcon } from "lucide-react";
+import { File, FileIcon, ImagesIcon, LayoutDashboard, PieChart, Square, UserCircle, UserIcon, VideoIcon } from "lucide-react";
 import React from "react";
-import FileSvg from '../../assets/images/files.png'
+import { useState } from "react";
 
-export default function Sidebar(){
+
+type SidebarProps = {
+    steps: 'dashboard' | 'images' | 'media' | 'others' | 'documents',
+    setstep: React.Dispatch<React.SetStateAction<'dashboard' | 'images' | 'media' | 'others' | 'documents'>>
+}
+
+export default function Sidebar({steps , setstep}: SidebarProps){
+
+    const options = [
+        {
+            label: 'Dashboard',
+            step: 'dashboard',
+            icon: LayoutDashboard
+        },
+        {
+            label: 'Documents',
+            step: 'documents',
+            icon: FileIcon
+        },
+        {
+            label: 'Images',
+            step: 'images',
+            icon: ImagesIcon
+        },
+        {
+            label: 'Media',
+            step: 'media',
+            icon: VideoIcon
+        },
+        {
+            label: 'Others',
+            step: 'others',
+            icon: PieChart
+        }
+    ]
+
+
     return (
         <div className="w-[300px] h-[600px]">
-            <div className="flex flex-col mt-16   justify-center items-center">
+            <div className="flex flex-col  mt-5  justify-center items-center">
                 <ul className="flex flex-col gap-10">
-                    <li className="flex items-center p-2 hover:bg-[#FA7275] cursor-pointer w-[200px] rounded-3xl hover:text-white gap-2">
-                        <LayoutDashboard/>
-                        <p className="text-lg font-semibold">Dashboard</p>
+                   {options.map(({label, step, icon: Icon})=> (
+                    <>
+                         <li onClick={()=> setstep(step as typeof steps)} className="flex items-center p-4 hover:bg-[#FA7275] cursor-pointer w-[200px] rounded-3xl hover:text-white gap-2">
+                        <Icon/>
+                        <p className="text-lg font-semibold">{label}</p>
                     </li>
-                    <li className="flex items-center p-2 hover:bg-[#FA7275] cursor-pointer w-[200px] rounded-3xl hover:text-white gap-2">
-                        <ImagesIcon/>
-                        <p className="text-lg font-semibold">Images</p>
-                    </li>
-                    <li className="flex items-center p-2 hover:bg-[#FA7275] cursor-pointer w-[200px] rounded-3xl hover:text-white gap-2">
-                        <VideoIcon/>
-                        <p className="text-lg font-semibold">Media</p>
-                    </li>
-                    <li className="flex items-center p-2 hover:bg-[#FA7275] cursor-pointer w-[200px] rounded-3xl hover:text-white gap-2">
-                        <PieChart/>
-                        <p className="text-lg font-semibold">Others</p>
-                    </li>
-                 
+                    </>
+                   ))}
                 </ul>
             </div>
             <div className="flex ml-10 gap-5 mt-24  h-full">
