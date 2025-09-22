@@ -10,6 +10,7 @@ const AuthService = () => {
     const { loginToStore } = useAuthStore()
 
     const useHandleSignUpRequest = () => {
+        const navigate = useNavigate()
         async function HandleSignUpRequest(
             data: SignUpFormType
         ): Promise<SignUpFormType> {
@@ -20,6 +21,7 @@ const AuthService = () => {
         const onSuccess = (data: SignUpFormType) => {
             console.log(data)
             toast.success("Login Successful!")
+            navigate('/login')
         }
 
         const onError = (error: any) => {
@@ -35,6 +37,7 @@ const AuthService = () => {
     }
 
     const useHandleLoginRequest = () => {
+        const navigate = useNavigate()
         async function HandleLoginRequest(
             data: LoginFormType
         ): Promise<AuthResponse> {
@@ -46,6 +49,7 @@ const AuthService = () => {
             toast.success("Login Successful!")
             if(data?.user && data?.token){
                 loginToStore(data?.user, data?.token)
+                navigate('/Home')
             }
         }
 
