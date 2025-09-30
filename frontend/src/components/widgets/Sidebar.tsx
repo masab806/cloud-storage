@@ -1,4 +1,4 @@
-import { File, FileIcon, ImagesIcon, LayoutDashboard, PieChart, Square, UserCircle, UserIcon, VideoIcon } from "lucide-react";
+import { File, FileIcon, ImagesIcon, LayoutDashboard, PieChart, UserCircle, VideoIcon } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 import { useAuthStore } from "../../store/auth-store";
@@ -12,6 +12,7 @@ type SidebarProps = {
 export default function Sidebar({ steps, setstep }: SidebarProps) {
 
     const { user } = useAuthStore()
+    console.log(user)
 
 
     const options = [

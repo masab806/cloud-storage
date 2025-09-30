@@ -1,11 +1,31 @@
 import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart, ResponsiveContainer } from "recharts"
 import { ChartContainer } from "../ui/chart"
 import type { ChartConfig } from "../ui/chart"
+import { useFileStore } from "../../store/file-store"
+import { useEffect } from "react"
+import { formatFileSize } from "../../lib/utils"
 
 export const description = "A radial chart with text"
 
+
+
+
+export function ChartRadialText() {
+
+  const {fetchTotalStorage, totalStorage} = useFileStore()
+
+useEffect(() => {
+  fetchTotalStorage()
+}, [fetchTotalStorage])
+
+console.log(formatFileSize(totalStorage))
+
+const MAX_STORAGE = 60 * 1024 * 1024 * 1024
+const percentUsed = Math.min((totalStorage/ MAX_STORAGE) * 100, 100)
+
+
 const chartData = [
-  { browser: "chrome", storage: 65, fill: "#FFFFFF" },
+  { browser: "chrome", storage: percentUsed, value: percentUsed, fill: "#FFFFFF" },
 ]
 
 const chartConfig = {
@@ -18,7 +38,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartRadialText() {
   return (
     <ChartContainer
       config={chartConfig}
@@ -27,8 +46,8 @@ export function ChartRadialText() {
       <ResponsiveContainer>
         <RadialBarChart
           data={chartData}
-          startAngle={0}
-          endAngle={250}
+          startAngle={90}
+          endAngle={-270}
           innerRadius={80}
           outerRadius={110}
         >
@@ -40,7 +59,7 @@ export function ChartRadialText() {
             polarRadius={[86, 74]}
           />
           <RadialBar
-            dataKey="storage"
+            dataKey="value"
             fill="#FB8E91" // bar color
             background={{ fill: "#FFFFFF" }} // ring color
             cornerRadius={10}

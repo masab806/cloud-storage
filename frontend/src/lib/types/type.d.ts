@@ -18,3 +18,28 @@ export type AuthResponse = {
     },
     token: string
 }
+
+export enum FileCategory {
+    DOCUMENT = 'document',
+    IMAGE = 'image',
+    MEDIA = 'media',
+    OTHERS = 'others'
+}
+
+export type FileType = {
+    id: Number,
+    fileName: string,
+    size: number,
+    url: string,
+    mimetype: string,
+    category: FileCategory,
+    owner: User
+}
+
+export type User = {
+    id: Number,
+    fullName: string,
+    email: string,
+    password: string,
+    Files: FileType
+}

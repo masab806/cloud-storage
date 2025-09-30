@@ -28,5 +28,14 @@ export class JwtStrategy extends PassportStrategy(
                 fullName: true
             }
         })
+
+        if(!user) return null;
+
+        return {
+            id: user.id,
+            email: user.email,
+            fullName: user.fullName,
+            files: user.files
+        }
     }
 }
