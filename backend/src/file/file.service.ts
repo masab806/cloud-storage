@@ -103,7 +103,6 @@ export class FileService {
             throw new NotFoundException("Files Not Found!")
         }
 
-        console.log(files)
 
         return {
             message: "The Files Are!",
