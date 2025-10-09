@@ -2,12 +2,14 @@ import React from "react";
 import OptionSvg from '../../assets/icons/Option.svg'
 import { useFileStore } from "../../store/file-store";
 import { formatDate, formatFileSize } from "../../lib/utils";
-import { FileIcon } from "lucide-react";
+import { DownloadIcon, FileIcon, TrashIcon, UploadIcon } from "lucide-react";
+import { DropdownMenu } from "../../components/ui/dropdown-menu";
+import { DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Button } from "../../components/ui/button";
 
 export default function DocumentsSection() {
 
-    const { groupedFiles } = useFileStore()
-    const {getCategorySizes} = useFileStore()
+    const { groupedFiles, getCategorySizes, downloadFile, deleteFile } = useFileStore()
 
     const { documents } = groupedFiles()
     const {documentsSize} = getCategorySizes()
@@ -23,7 +25,7 @@ export default function DocumentsSection() {
                 </div>
 
                 <div className="p-5">
-                    <ul className="grid gap-5 grid-cols-4">
+                    <ul className="grid gap-5 grid-cols-3">
                         {documents.map((doc) => (
                             <li className="h-[250px] w-[250px] p-5 rounded-3xl bg-white">
                                 <div className="flex justify-between items-">
@@ -32,11 +34,28 @@ export default function DocumentsSection() {
                                         <FileIcon />
                                     </div>
                                     <div className="flex flex-col items-end gap-5">
-                                        <p><button className="cursor-pointer"><img src={OptionSvg} alt="" /></button></p>
+                                        <p><DropdownMenu>
+                                            <DropdownMenuTrigger><button className="cursor-pointer"><img src={OptionSvg} alt="" /></button></DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <div className="bg-white shadow-2xl rounded-2xl h-[200px] w-[200px] fixed">
+                                                    <div className="p-5 font-bold w-[100px] overflow-hidden">{doc?.fileName}</div>
+                                                    <ul className="flex flex-col gap-5 rounded-3xl ml-5 justify-center ">
+                                                        <li onClick={()=> {downloadFile(doc?.id, doc?.fileName)}} className="flex items-center gap-2 cursor-pointer">
+                                                            <div className="p-2 bg-green-500 rounded-full"><DownloadIcon size={16} className="text-white"/></div>
+                                                            <p className="text-sm font-bold">Download</p>
+                                                        </li>
+                                                        <li onClick={()=> {deleteFile(doc?.id), window.location.reload()}} className="flex items-center gap-2 cursor-pointer">
+                                                             <div className="p-2 bg-red-500 rounded-full"><TrashIcon size={16} className="text-white"/></div>
+                                                            <p className="text-sm font-bold">Delete</p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </DropdownMenuContent>
+                                            </DropdownMenu></p>
                                         <p className="font-semibold">Size: {formatFileSize(doc.size)}</p>
                                     </div>
                                 </div>
-                                <div className="w-[180px] overflow-hidden"><p className={`font-bold whitespace-nowrap ${doc?.fileName.length > 20 ? "animate-marquee" : ""}`}>{doc?.fileName}</p></div>
+                                <div className="w-[180px] overflow-hidden"><p className="font-bold">{doc?.fileName}</p></div>
                                 <div className="mt-16"><p>{formatDate(doc?.createdAt)}</p></div>
                             </li>
                         ))}

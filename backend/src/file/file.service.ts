@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import path from 'path';
+import * as path from 'path';
 import { FileCategory, FileEntity } from 'src/Entites/File-Entites/file.entity';
 import { Repository } from 'typeorm';
 import * as fs from 'fs'
@@ -39,7 +39,7 @@ export class FileService {
                 fileName: file.originalname,
                 mimetype: file.mimetype,
                 size: file.size,
-                url: file.path,
+                url: path.join(file.destination, file.filename),
                 category: this.detectCategory(file.mimetype),
                 owner: { id: Number(userId) }
             })
@@ -68,12 +68,16 @@ export class FileService {
             }
         })
 
+        console.log("Deleting file with:", { fileId, userId }); 
+
         if (!file) {
             throw new NotFoundException('File Not Found!')
         }
 
         try {
-            const filePath = path.resolve(file.url)
+            const filePath = path.isAbsolute(file.url)
+                ? file.url
+                : path.join(process.cwd(), file.url);
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath)
             }
@@ -123,6 +127,8 @@ export class FileService {
             throw new NotFoundException("File Not Found!")
         }
 
+
+
         const filePath = path.resolve(file.url)
 
         if (!fs.existsSync(filePath)) {
@@ -138,20 +144,20 @@ export class FileService {
         }
     }
 
-    async getTotalStorage(userId: number){
-       const files = await this.fileRepo.find({
-        where: {
-            owner: {
-                id: userId
+    async getTotalStorage(userId: number) {
+        const files = await this.fileRepo.find({
+            where: {
+                owner: {
+                    id: userId
+                }
             }
+        })
+
+        const totalSize = files.reduce((acc, f) => acc + f.size, 0)
+
+        return {
+            totalSize
         }
-       })
-
-       const totalSize = files.reduce((acc,f)=> acc + f.size,0)
-
-       return {
-        totalSize
-       }
     }
 
 }
