@@ -25,7 +25,9 @@ interface FileStore {
         othersSize: number
     }
 
-    fetchTotalStorage: () => Promise<void>
+    fetchTotalStorage: () => Promise<void>,
+
+    deleteFile: (id: Number) => Promise<any>
 }
 
 
@@ -137,5 +139,31 @@ export const useFileStore = create<FileStore>((set, get) => ({
         } catch (error) {
             console.log("An Error Occured! ", error)
         }
+    },
+
+    deleteFile: async (id: Number)=> {
+        try {
+            const token = useAuthStore.getState().token
+
+            console.log(id)
+
+            const response = await api.delete(`/file/delete/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            const responseData = response.data
+
+            if(responseData.error){
+                toast.error(responseData.error)
+            } else {
+                return responseData
+            }
+        } catch (error) {
+            console.log("Error While Deleting File!", error)
+        }
     }
+
+
 }))

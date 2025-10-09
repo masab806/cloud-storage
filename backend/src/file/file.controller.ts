@@ -31,7 +31,7 @@ export class FileController {
         return this.fileService.saveFile(file, userId)
     }
 
-    @Delete(':id')
+    @Delete('/delete/:id')
     @UseGuards(JwtAuthGuard)
     async DeleteFile(@Param('id') id: string, @Req() req) {
         const userId = req.user?.id
