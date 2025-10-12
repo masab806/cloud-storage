@@ -11,6 +11,7 @@ import type z from "zod";
 import { SignUpSchema } from "../../lib/schemas/schema";
 import AuthService from "../../services/auth.service";
 
+
 type SignUpForm = z.infer<typeof SignUpSchema>
 
 export default function SignUp() {
