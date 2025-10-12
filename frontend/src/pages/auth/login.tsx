@@ -30,7 +30,6 @@ export default function Login() {
 
 
     const onFormSubmit = (data: LoginForm)=>{
-        console.log("Submitted data: ", data)
         handleLogin(data)
     }
 

@@ -32,7 +32,7 @@ export class FileService {
         return FileCategory.OTHERS
     }
 
-    async saveFile(file: Express.Multer.File, userId: string) {
+    async saveFile(file: Express.Multer.File, userId: Number) {
         console.log(userId)
         try {
             const fileEntity = this.fileRepo.create({

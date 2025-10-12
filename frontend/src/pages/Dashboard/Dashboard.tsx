@@ -20,7 +20,7 @@ export default function Dashboard() {
 
 
     const getLastUpdated = (files: typeof File) => {
-        if (!files || files.length === 0) return "-"
+        if (!files || files.length === 0) return "No Files Uploaded"
 
         const latest = files.reduce((latest, file) => {
             const d = new Date(file.createdAt);
@@ -30,9 +30,13 @@ export default function Dashboard() {
         return formatDate(latest);
     }
 
-    const newFiles = files?.slice(0, 5)
 
-    console.log(newFiles)
+    const newFiles = [...(files || [])].sort((a,b)=>{
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        return dateB - dateA
+    }).slice(0,5)
+
 
     const categoryStyles: Record<string, { icon: JSX.Element; bg: string }> = {
         document: {

@@ -145,8 +145,6 @@ export const useFileStore = create<FileStore>((set, get) => ({
         try {
             const token = useAuthStore.getState().token
 
-            console.log(id)
-
             const response = await api.delete(`/file/delete/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`

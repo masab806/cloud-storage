@@ -12,7 +12,7 @@ export default function DocumentsSection() {
     const { groupedFiles, getCategorySizes, downloadFile, deleteFile } = useFileStore()
 
     const { documents } = groupedFiles()
-    const {documentsSize} = getCategorySizes()
+    const { documentsSize } = getCategorySizes()
 
 
 
@@ -37,25 +37,25 @@ export default function DocumentsSection() {
                                         <p><DropdownMenu>
                                             <DropdownMenuTrigger><button className="cursor-pointer"><img src={OptionSvg} alt="" /></button></DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <div className="bg-white shadow-2xl rounded-2xl h-[200px] w-[200px] fixed">
-                                                    <div className="p-5 font-bold w-[100px] overflow-hidden">{doc?.fileName}</div>
+                                                <div className="bg-white shadow-2xl rounded-2xl py-5 w-[250px] fixed">
+                                                    <div className="p-5 font-bold w-[200px] overflow-hidden">{doc?.fileName}</div>
                                                     <ul className="flex flex-col gap-5 rounded-3xl ml-5 justify-center ">
-                                                        <li onClick={()=> {downloadFile(doc?.id, doc?.fileName)}} className="flex items-center gap-2 cursor-pointer">
-                                                            <div className="p-2 bg-green-500 rounded-full"><DownloadIcon size={16} className="text-white"/></div>
+                                                        <li onClick={() => { downloadFile(doc?.id, doc?.fileName) }} className="flex items-center gap-2 cursor-pointer">
+                                                            <div className="p-2 bg-green-500 rounded-full"><DownloadIcon size={16} className="text-white" /></div>
                                                             <p className="text-sm font-bold">Download</p>
                                                         </li>
-                                                        <li onClick={()=> {deleteFile(doc?.id), window.location.reload()}} className="flex items-center gap-2 cursor-pointer">
-                                                             <div className="p-2 bg-red-500 rounded-full"><TrashIcon size={16} className="text-white"/></div>
+                                                        <li onClick={() => { deleteFile(doc?.id), window.location.reload() }} className="flex items-center gap-2 cursor-pointer">
+                                                            <div className="p-2 bg-red-500 rounded-full"><TrashIcon size={16} className="text-white" /></div>
                                                             <p className="text-sm font-bold">Delete</p>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </DropdownMenuContent>
-                                            </DropdownMenu></p>
+                                        </DropdownMenu></p>
                                         <p className="font-semibold">Size: {formatFileSize(doc.size)}</p>
                                     </div>
                                 </div>
-                                <div className="w-[180px] overflow-hidden"><p className="font-bold">{doc?.fileName}</p></div>
+                                <div className="w-[200px] overflow-hidden"><p className="font-bold">{doc?.fileName}</p></div>
                                 <div className="mt-16"><p>{formatDate(doc?.createdAt)}</p></div>
                             </li>
                         ))}
